@@ -6,8 +6,12 @@
  * EXAMPLE
  * trimProperties({ name: '  jane  ' }) // returns a new object { name: 'jane' }
  */
-function trimProperties(obj) {
-  // ✨ implement
+ function trimProperties(obj) {
+  const trimmed = {}
+  for (var key in obj) {
+    trimmed[key] = obj[key].trim()
+  }
+  return trimmed
 }
 
 /**
@@ -19,7 +23,10 @@ function trimProperties(obj) {
  * trimPropertiesMutation({ name: '  jane  ' }) // returns the object mutated in place { name: 'jane' }
  */
 function trimPropertiesMutation(obj) {
-  // ✨ implement
+  for (var key in obj) {
+    obj[key] = obj[key].trim()
+  }
+  return obj
 }
 
 /**
@@ -31,7 +38,8 @@ function trimPropertiesMutation(obj) {
  * findLargestInteger([{ integer: 1 }, { integer: 3 }, { integer: 2 }]) // returns 3
  */
 function findLargestInteger(integers) {
-  // ✨ implement
+  const largestInt = integers.map(obj => obj['integer'])
+  return (Math.max(...largestInt))
 }
 
 class Counter {
@@ -40,7 +48,7 @@ class Counter {
    * @param {number} initialNumber - the initial state of the count
    */
   constructor(initialNumber) {
-    // ✨ initialize whatever properties are needed
+    this.result = initialNumber + 1
   }
 
   /**
@@ -56,16 +64,17 @@ class Counter {
    * counter.countDown() // returns 0
    */
   countDown() {
-    // ✨ implement
+    this.result -= 1
+    return this.result < 0 ? 0 : this.result
   }
 }
-
 class Seasons {
   /**
    * [Exercise 5A] Seasons creates a seasons object
    */
   constructor() {
-    // ✨ initialize whatever properties are needed
+    this.seasons = ["summer", "fall", "winter", "spring"]
+    this.call = -1
   }
 
   /**
@@ -81,7 +90,8 @@ class Seasons {
    * seasons.next() // returns "summer"
    */
   next() {
-    // ✨ implement
+    this.call++
+    return this.seasons[this.call % 4]
   }
 }
 
@@ -95,7 +105,10 @@ class Car {
   constructor(name, tankSize, mpg) {
     this.odometer = 0 // car initilizes with zero miles
     this.tank = tankSize // car initiazes full of gas
-    // ✨ initialize whatever other properties are needed
+    this.tankSize = tankSize
+    this.mpg = mpg
+    this.carModel = name
+    this.maxDistance = tankSize * mpg
   }
 
   /**
@@ -112,9 +125,16 @@ class Car {
    * focus.drive(200) // returns 600 (ran out of gas after 100 miles)
    */
   drive(distance) {
-    // ✨ implement
+    const milesCanDrive = this.tank * this.mpg
+    if (distance <= milesCanDrive) {
+      this.odometer = this.odometer + distance
+      this.tank = this.tank - (distance / this.mpg)
+    } else {
+      this.tank = 0
+      this.odometer = this.odometer + milesCanDrive
+    }
+    return this.odometer
   }
-
   /**
    * [Exercise 6C] Adds gallons to the tank
    * @param {number} gallons - the gallons of fuel we want to put in the tank
@@ -127,7 +147,12 @@ class Car {
    * focus.refuel(99) // returns 600 (tank only holds 20)
    */
   refuel(gallons) {
-    // ✨ implement
+    if (gallons <= this.tankSize - this.tank) {
+      this.tank = this.tank + gallons
+    } else {
+      this.tank = this.tankSize
+    }
+    return this.tank * this.mpg
   }
 }
 
@@ -145,7 +170,7 @@ class Car {
  * })
  */
 function isEvenNumberAsync(number) {
-  // ✨ implement
+  return number % 2 === 0
 }
 
 module.exports = {
@@ -157,3 +182,6 @@ module.exports = {
   Seasons,
   Car,
 }
+
+// [Exercise 6]Car[17] refueling allows to keep driving
+// [Exercise 6]Car[18] adding fuel to a full tank has no effect
